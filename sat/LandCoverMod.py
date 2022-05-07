@@ -8,6 +8,7 @@ class SenM(sen):
     windowSize = 15
     MODEL_NAME = 'TestModel'
     K = 5
+    history = None
     def __init__(self,Path=None):
         sen.__init__(self, Path=None)
         
@@ -65,3 +66,75 @@ class SenM(sen):
         SenM.X_test = X_test.reshape(-1, SenM.windowSize, SenM.windowSize, SenM.K, 1)
         SenM.y_train = tf.keras.utils.to_categorical(y_train)
         SenM.y_test = tf.keras.utils.to_categorical(y_test)
+    
+    def CModel(self):
+        S = SenM.windowSize
+        L = SenM.K
+        output_units = SenM.y_train.shape[1]
+
+        ## input layer
+        input_layer = tf. keras.Input((S, S, L, 1))
+
+        ## convolutional layers
+        conv_layer1 = tf.keras.layers.Conv3D(filters=16, kernel_size=(2, 2, 3), activation='relu')(input_layer)
+        conv_layer2 = tf.keras.layers.Conv3D(filters=32, kernel_size=(2, 2, 3), activation='relu')(conv_layer1)
+        conv2d_shape = conv_layer2.shape
+        conv_layer3 = tf.keras.layers.Reshape((conv2d_shape[1], conv2d_shape[2], conv2d_shape[3]*conv2d_shape[4]))(conv_layer2)
+        conv_layer4 = tf.keras.layers.Conv2D(filters=64, kernel_size=(2,2), activation='relu')(conv_layer3)
+
+        flatten_layer = tf.keras.layers.Flatten()(conv_layer4)
+
+        ## fully connected layers
+        dense_layer1 = tf.keras.layers.Dense(128, activation='relu')(flatten_layer)
+        dense_layer1 = tf.keras.layers.Dropout(0.4)(dense_layer1)
+        dense_layer2 = tf.keras.layers.Dense(64, activation='relu')(dense_layer1)
+        dense_layer2 = tf.keras.layers.Dropout(0.4)(dense_layer2)
+        dense_layer3 = tf.keras.layers.Dense(20, activation='relu')(dense_layer2)
+        dense_layer3 = tf.keras.layers.Dropout(0.4)(dense_layer3)
+        output_layer = tf.keras.layers.Dense(units=output_units, activation='softmax')(dense_layer3)
+        # define the model with input layer and output layer
+        model = tf.keras.Model(name = SenM.dataset+'_Model' , inputs=input_layer, outputs=output_layer)
+
+        model.summary()
+
+        # Compile
+        model.compile(optimizer = 'adam', loss = 'categorical_crossentropy',
+                    metrics = ['accuracy'])
+
+        # Callbacks
+        logdir = self.Path+"logs/" +model.name+'_'+datetime.datetime.now().strftime("%d:%m:%Y-%H:%M:%S")
+
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+
+        es = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss',
+                        min_delta = 0,
+                        patience = 1,
+                        verbose = 1,
+                        restore_best_weights = True)
+
+        checkpoint = tf.keras.callbacks.ModelCheckpoint(filepath = 'Test_Model.h5', 
+                                    monitor = 'val_loss', 
+                                    mode ='min', 
+                                    save_best_only = True,
+                                    verbose = 1)
+        # Fit
+        SenM.history = model.fit(x=SenM.X_train, y=SenM.y_train, 
+                            batch_size=1024*6, epochs=6, 
+                            validation_data=(SenM.X_test, SenM.y_test), callbacks = [tensorboard_callback, es, checkpoint])
+
+    def Mgraph(self):
+        hist=SenM.history
+        histdf= pd.DataFrame(hist.hist)
+
+        plt.figure(figsize = (12, 6))
+        plt.plot(range(len(histdf['accuracy'].values.tolist())), histdf['accuracy'].values.tolist(), label = 'Train_Accuracy')
+        plt.plot(range(len(histdf['loss'].values.tolist())), histdf['loss'].values.tolist(), label = 'Train_Loss')
+        plt.plot(range(len(histdf['val_accuracy'].values.tolist())), histdf['val_accuracy'].values.tolist(), label = 'Test_Accuracy')
+        plt.plot(range(len(histdf['val_loss'].values.tolist())), histdf['val_loss'].values.tolist(), label = 'Test_Loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Value')
+        plt.legend()
+        plt.show()
+        
+
+
