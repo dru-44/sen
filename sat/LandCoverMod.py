@@ -126,13 +126,13 @@ class SenM(sen):
                             validation_data=(SenM.X_test, SenM.y_test), callbacks = [tensorboard_callback, es, checkpoint])
         
         #predictions
-        SenM.pred = model.predict(X_test, batch_size=1204*6, verbose=1)
+        SenM.pred = model.predict(SenM.X_test, batch_size=1204*6, verbose=1)
 
         #plt.figure(figsize = (10,7))
 
         classes = [f'Class-{i}' for i in range(1, 7)]
-        mat = tf.math.confusion_matrix(np.argmax(y_test, 1),
-                            np.argmax(pred, 1))
+        mat = tf.math.confusion_matrix(np.argmax(SenM.y_test, 1),
+                            np.argmax(SenM.pred, 1))
         SenM.df_cm = pd.DataFrame(mat.numpy(), index = classes, columns = classes)
 
 
