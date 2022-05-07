@@ -9,6 +9,8 @@ class SenM(sen):
     MODEL_NAME = 'TestModel'
     K = 5
     history = None
+    df_cm= None
+    pred= None
     def __init__(self,Path=None):
         sen.__init__(self, Path=None)
         
@@ -96,6 +98,7 @@ class SenM(sen):
         model = tf.keras.Model(name = SenM.dataset+'_Model' , inputs=input_layer, outputs=output_layer)
 
         model.summary()
+        
 
         # Compile
         model.compile(optimizer = 'adam', loss = 'categorical_crossentropy',
@@ -121,6 +124,17 @@ class SenM(sen):
         SenM.history = model.fit(x=SenM.X_train, y=SenM.y_train, 
                             batch_size=1024*6, epochs=6, 
                             validation_data=(SenM.X_test, SenM.y_test), callbacks = [tensorboard_callback, es, checkpoint])
+        
+        #predictions
+        SenM.pred = model.predict(X_test, batch_size=1204*6, verbose=1)
+
+        #plt.figure(figsize = (10,7))
+
+        classes = [f'Class-{i}' for i in range(1, 7)]
+        mat = tf.math.confusion_matrix(np.argmax(y_test, 1),
+                            np.argmax(pred, 1))
+        SenM.df_cm = pd.DataFrame(mat.numpy(), index = classes, columns = classes)
+
 
     def Mgraph(self):
         hist=SenM.history
@@ -135,6 +149,17 @@ class SenM(sen):
         plt.ylabel('Value')
         plt.legend()
         plt.show()
-        
+    
+    def Mhmap(self):
+        sns.heatmap(SenM.df_cm, annot=True, fmt='d')
+        plt.title('Confusion Matrix', fontsize = 20)
+        plt.show()
+    def Mreport(self):
+        print(classification_report(np.argmax(SenM.y_test, 1),
+                                    np.argmax(SenM.pred, 1),
+                                    target_names=[f'Class-{i}' for i in range(1, 7)]))
+
+
+
 
 
