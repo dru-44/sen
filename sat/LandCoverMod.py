@@ -11,6 +11,7 @@ class senM(sen):
     history = None
     df_cm= None
     pred= None
+    pred_t= None
     def __init__(self,Path=None):
       with console.status("[bold green]Verifying resources...") as status:
         sen.__init__(self, Path)
@@ -131,7 +132,8 @@ class senM(sen):
         #predictions
       
         senM.pred = model.predict(senM.X_test, batch_size=1204*6, verbose=1)
-        
+        senM.pred_t = model.predict(X.reshape(-1, senM.windowSize, senM.windowSize, senM.K, 1),
+                            batch_size=1204*6, verbose=1)
         #plt.figure(figsize = (10,7))
 
         classes = [f'Class-{i}' for i in range(1, 7)]
@@ -175,16 +177,15 @@ class senM(sen):
 
 
 
-    # def Mplot(self):
+    def Mplot(self):
         
-    #     pred_t = model.predict(X.reshape(-1, windowSize, windowSize, K, 1),
-    #                         batch_size=1204*6, verbose=1)
-    #     # Visualize Groundtruth
+        
+        # Visualize Groundtruth
 
-    #     ep.plot_bands(np.argmax(pred_t, axis=1).reshape(954, 298), 
-    #                 cmap=ListedColormap(['darkgreen', 'green', 'black', 
-    #                                     '#CA6F1E', 'navy', 'forestgreen']))
-    #     plt.show()
+        ep.plot_bands(np.argmax(senM.pred_t, axis=1).reshape(954, 298), 
+                    cmap=ListedColormap(['darkgreen', 'green', 'black', 
+                                        '#CA6F1E', 'navy', 'forestgreen']))
+        plt.show()
 
 
 
