@@ -1,7 +1,7 @@
 from main import *
 
 
-class SenM(sen):
+class senM(sen):
     X_data = y_data = X_train = X_test = y_train = y_test = X_scaled = None
     dataset = 'SB'
     test_size = 0.30
@@ -12,7 +12,8 @@ class SenM(sen):
     df_cm= None
     pred= None
     def __init__(self,Path=None):
-        sen.__init__(self, Path=None)
+      with console.status("[bold green]Verifying resources...") as status:
+        sen.__init__(self, Path)
         
         def applyPCA(X, numComponents=75):
             newX = np.reshape(X, (-1, X.shape[2]))
@@ -57,22 +58,24 @@ class SenM(sen):
             return X_train, X_test, y_train, y_test
 
        
-        SenM.X_data = np.moveaxis(sen.arr_st, 0, -1)
-        SenM.y_data = loadmat('/content/'+self.Path +
+        senM.X_data = np.moveaxis(sen.arr_st, 0, -1)
+        senM.y_data = loadmat('/content/'+self.Path +
                               '/Sundarbands_gt.mat')['gt']
         
-        X,pca = applyPCA(SenM.X_data,numComponents=SenM.K)
-        X, y = createImageCubes(X, SenM.y_data, windowSize=SenM.windowSize)
-        X_train, X_test, y_train, y_test = splitTrainTestSet(X, y, testRatio = SenM.test_size)
-        SenM.X_train = X_train.reshape(-1, SenM.windowSize, SenM.windowSize, SenM.K, 1)
-        SenM.X_test = X_test.reshape(-1, SenM.windowSize, SenM.windowSize, SenM.K, 1)
-        SenM.y_train = tf.keras.utils.to_categorical(y_train)
-        SenM.y_test = tf.keras.utils.to_categorical(y_test)
+        X,pca = applyPCA(senM.X_data,numComponents=senM.K)
+        X, y = createImageCubes(X, senM.y_data, windowSize=senM.windowSize)
+        X_train, X_test, y_train, y_test = splitTrainTestSet(X, y, testRatio = senM.test_size)
+        senM.X_train = X_train.reshape(-1, senM.windowSize, senM.windowSize, senM.K, 1)
+        senM.X_test = X_test.reshape(-1, senM.windowSize, senM.windowSize, senM.K, 1)
+        senM.y_train = tf.keras.utils.to_categorical(y_train)
+        senM.y_test = tf.keras.utils.to_categorical(y_test)
+        console.log(f" Done!")
     
     def CModel(self):
-        S = SenM.windowSize
-        L = SenM.K
-        output_units = SenM.y_train.shape[1]
+      
+        S = senM.windowSize
+        L = senM.K
+        output_units = senM.y_train.shape[1]
 
         ## input layer
         input_layer = tf. keras.Input((S, S, L, 1))
@@ -95,11 +98,11 @@ class SenM(sen):
         dense_layer3 = tf.keras.layers.Dropout(0.4)(dense_layer3)
         output_layer = tf.keras.layers.Dense(units=output_units, activation='softmax')(dense_layer3)
         # define the model with input layer and output layer
-        model = tf.keras.Model(name = SenM.dataset+'_Model' , inputs=input_layer, outputs=output_layer)
+        model = tf.keras.Model(name = senM.dataset+'_Model' , inputs=input_layer, outputs=output_layer)
 
         model.summary()
         
-
+      
         # Compile
         model.compile(optimizer = 'adam', loss = 'categorical_crossentropy',
                     metrics = ['accuracy'])
@@ -121,45 +124,67 @@ class SenM(sen):
                                     save_best_only = True,
                                     verbose = 1)
         # Fit
-        SenM.history = model.fit(x=SenM.X_train, y=SenM.y_train, 
+        history  = model.fit(x=senM.X_train, y=senM.y_train, 
                             batch_size=1024*6, epochs=6, 
-                            validation_data=(SenM.X_test, SenM.y_test), callbacks = [tensorboard_callback, es, checkpoint])
-        
+                            validation_data=(senM.X_test, senM.y_test), callbacks = [tensorboard_callback, es, checkpoint])
+        history  = pd.DataFrame(history .history )
         #predictions
-        SenM.pred = model.predict(SenM.X_test, batch_size=1204*6, verbose=1)
-
+      
+        senM.pred = model.predict(senM.X_test, batch_size=1204*6, verbose=1)
+        
         #plt.figure(figsize = (10,7))
 
         classes = [f'Class-{i}' for i in range(1, 7)]
-        mat = tf.math.confusion_matrix(np.argmax(SenM.y_test, 1),
-                            np.argmax(SenM.pred, 1))
-        SenM.df_cm = pd.DataFrame(mat.numpy(), index = classes, columns = classes)
+        mat = tf.math.confusion_matrix(np.argmax(senM.y_test, 1),
+                            np.argmax(senM.pred, 1))
+        senM.df_cm = pd.DataFrame(mat.numpy(), index = classes, columns = classes)
+        def Mgraph(self):
+       
+        
 
+          plt.figure(figsize = (12, 6))
+          plt.plot(range(len(history  ['accuracy'].values.tolist())), history  ['accuracy'].values.tolist(), label = 'Train_Accuracy')
+          plt.plot(range(len(history  ['loss'].values.tolist())), history  ['loss'].values.tolist(), label = 'Train_Loss')
+          plt.plot(range(len(history  ['val_accuracy'].values.tolist())), history  ['val_accuracy'].values.tolist(), label = 'Test_Accuracy')
+          plt.plot(range(len(history  ['val_loss'].values.tolist())), history  ['val_loss'].values.tolist(), label = 'Test_Loss')
+          plt.xlabel('Epochs')
+          plt.ylabel('Value')
+          plt.legend()
+          plt.show()
+        Mgraph(self)
 
-    def Mgraph(self):
-        hist=SenM.history
-        histdf= pd.DataFrame(hist.hist)
-
-        plt.figure(figsize = (12, 6))
-        plt.plot(range(len(histdf['accuracy'].values.tolist())), histdf['accuracy'].values.tolist(), label = 'Train_Accuracy')
-        plt.plot(range(len(histdf['loss'].values.tolist())), histdf['loss'].values.tolist(), label = 'Train_Loss')
-        plt.plot(range(len(histdf['val_accuracy'].values.tolist())), histdf['val_accuracy'].values.tolist(), label = 'Test_Accuracy')
-        plt.plot(range(len(histdf['val_loss'].values.tolist())), histdf['val_loss'].values.tolist(), label = 'Test_Loss')
-        plt.xlabel('Epochs')
-        plt.ylabel('Value')
-        plt.legend()
-        plt.show()
+    
+        
     
     def Mhmap(self):
-        sns.heatmap(SenM.df_cm, annot=True, fmt='d')
+      
+        sns.heatmap(senM.df_cm, annot=True, fmt='d')
         plt.title('Confusion Matrix', fontsize = 20)
         plt.show()
+        
+    
     def Mreport(self):
-        print(classification_report(np.argmax(SenM.y_test, 1),
-                                    np.argmax(SenM.pred, 1),
+      
+        print(classification_report(np.argmax(senM.y_test, 1),
+                                    np.argmax(senM.pred, 1),
                                     target_names=[f'Class-{i}' for i in range(1, 7)]))
+        
 
 
+
+
+
+
+    # def Mplot(self):
+        
+    #     pred_t = model.predict(X.reshape(-1, windowSize, windowSize, K, 1),
+    #                         batch_size=1204*6, verbose=1)
+    #     # Visualize Groundtruth
+
+    #     ep.plot_bands(np.argmax(pred_t, axis=1).reshape(954, 298), 
+    #                 cmap=ListedColormap(['darkgreen', 'green', 'black', 
+    #                                     '#CA6F1E', 'navy', 'forestgreen']))
+    #     plt.show()
 
 
 

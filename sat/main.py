@@ -26,7 +26,9 @@ import tensorflow as tf
 import pandas as pd
 import seaborn as sns
 import plotly.express as px
+from rich.console import Console
 
+console = Console()
 
 
 np.seterr(divide='ignore', invalid='ignore')
