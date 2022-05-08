@@ -26,6 +26,7 @@ setup(
     "<rasterio> >= <1.2.10>",
     "<plotly> >= <5.7.0>",
     "<earthpy>",
+    "<tensorboard>",
    ] 
 
 )
