@@ -1,4 +1,4 @@
-from sat.main import *
+from src.main import *
 
 
 
