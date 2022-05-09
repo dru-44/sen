@@ -23,9 +23,11 @@ from sklearn.svm import SVC
 import lightgbm as lgb
 from sklearn.decomposition import PCA
 import tensorflow as tf
+tf.config.optimizer.set_jit(True)
 import pandas as pd
 import seaborn as sns
 import plotly.express as px
+from time import sleep
 from rich.console import Console
 
 console = Console()
@@ -43,7 +45,7 @@ class sen:
     def __init__(self, Path=None):
         self.Path = Path
 
-        sen.S_sentinel_bands = glob("/content/"+self.Path+"/*B?*.tiff")
+        sen.S_sentinel_bands = glob(self.Path+"/*B?*.tiff")
         sen.S_sentinel_bands.sort()
         l = []
         for i in sen.S_sentinel_bands:

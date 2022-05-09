@@ -2,6 +2,8 @@ from main import *
 
 
 
+
+
 class senC(sen):
     X_data = y_data = X_train = X_test = y_train = y_test = X_scaled = None
 
@@ -13,7 +15,7 @@ class senC(sen):
         scaler = StandardScaler().fit(senC.X_data)
 
         senC.X_scaled = scaler.transform(senC.X_data)
-        senC.y_data = loadmat("/content/"+self.Path +
+        senC.y_data = loadmat(self.Path +
                               "/Sundarbands_gt.mat")['gt']
         senC.X_train, senC.X_test, senC.y_train, senC.y_test = train_test_split(
             senC.X_scaled, senC.y_data.ravel(), test_size=0.30, stratify=senC.y_data.ravel())
@@ -23,14 +25,16 @@ class senC(sen):
           knn = KNeighborsClassifier(n_neighbors=6)
           knn.fit(senC.X_train, senC.y_train)
           knn_pred = knn.predict(senC.X_test)
+          
           print(f"Accuracy: {accuracy_score(senC.y_test, knn_pred)*100}\n")
           print(classification_report(senC.y_test, knn_pred))
         with console.status("[bold green]plotting...") as status:
-          ep.plot_bands(knn.predict(senC.X_scaled).reshape((954, 298)),
-                        cmap=ListedColormap(['darkgreen', 'green', 'black',
-                                            '#CA6F1E', 'navy', 'forestgreen']),title="K-NNC")
-          plt.show()
-          console.log(f" Done!")
+                ep.plot_bands(knn.predict(senC.X_scaled).reshape((954, 298)),
+                              cmap=ListedColormap(['darkgreen', 'green', 'black',
+                                                  '#CA6F1E', 'navy', 'forestgreen']),title="K-NNC")
+                plt.show()
+                console.log(f" Done!")
+        
 
     def SVM(self):
       with console.status("[bold green]Working on task...") as status:

@@ -28,6 +28,8 @@ setup(
     "<earthpy>",
     "<tensorboard>",
     "<rich>",
+    "<lightgbm>",
+    "<seaborn>",
    ] 
 
 )
