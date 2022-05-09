@@ -27,6 +27,7 @@ setup(
     "<plotly> >= <5.7.0>",
     "<earthpy>",
     "<tensorboard>",
+    "<rich>",
    ] 
 
 )
