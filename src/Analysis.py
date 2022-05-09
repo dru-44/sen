@@ -1,4 +1,4 @@
-from src.main import *
+from src.base import *
 
 class senA(sen):   
     def NDVI(self):
