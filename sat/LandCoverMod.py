@@ -1,6 +1,8 @@
 from main import *
 
 
+
+
 class senM(sen):
     X_data = y_data = X_train = X_test = y_train = y_test = X_scaled = None
     dataset = 'SB'
@@ -12,6 +14,8 @@ class senM(sen):
     df_cm= None
     pred= None
     pred_t= None
+    X=None 
+    
     def __init__(self,Path=None):
       with console.status("[bold green]Verifying resources...") as status:
         sen.__init__(self, Path)
@@ -63,9 +67,9 @@ class senM(sen):
         senM.y_data = loadmat('/content/'+self.Path +
                               '/Sundarbands_gt.mat')['gt']
         
-        X,pca = applyPCA(senM.X_data,numComponents=senM.K)
-        X, y = createImageCubes(X, senM.y_data, windowSize=senM.windowSize)
-        X_train, X_test, y_train, y_test = splitTrainTestSet(X, y, testRatio = senM.test_size)
+        senM.X,pca = applyPCA(senM.X_data,numComponents=senM.K)
+        senM.X, y = createImageCubes(senM.X, senM.y_data, windowSize=senM.windowSize)
+        X_train, X_test, y_train, y_test = splitTrainTestSet(senM.X, y, testRatio = senM.test_size)
         senM.X_train = X_train.reshape(-1, senM.windowSize, senM.windowSize, senM.K, 1)
         senM.X_test = X_test.reshape(-1, senM.windowSize, senM.windowSize, senM.K, 1)
         senM.y_train = tf.keras.utils.to_categorical(y_train)
@@ -101,7 +105,7 @@ class senM(sen):
         # define the model with input layer and output layer
         model = tf.keras.Model(name = senM.dataset+'_Model' , inputs=input_layer, outputs=output_layer)
 
-        model.summary()
+        senM.su=model.summary()
         
       
         # Compile
@@ -130,16 +134,18 @@ class senM(sen):
                             validation_data=(senM.X_test, senM.y_test), callbacks = [tensorboard_callback, es, checkpoint])
         history  = pd.DataFrame(history .history )
         #predictions
-      
         senM.pred = model.predict(senM.X_test, batch_size=1204*6, verbose=1)
-        senM.pred_t = model.predict(X.reshape(-1, senM.windowSize, senM.windowSize, senM.K, 1),
-                            batch_size=1204*6, verbose=1)
+        senM.pred_t = model.predict(senM.X.reshape(-1, senM.windowSize, senM.windowSize, senM.K, 1),
+                              batch_size=1204*6, verbose=1)
         #plt.figure(figsize = (10,7))
 
         classes = [f'Class-{i}' for i in range(1, 7)]
         mat = tf.math.confusion_matrix(np.argmax(senM.y_test, 1),
-                            np.argmax(senM.pred, 1))
+                              np.argmax(senM.pred, 1))
         senM.df_cm = pd.DataFrame(mat.numpy(), index = classes, columns = classes)
+          
+        
+          
         def Mgraph(self):
        
         
@@ -156,7 +162,7 @@ class senM(sen):
         Mgraph(self)
 
     
-        
+   
     
     def Mhmap(self):
       
@@ -178,6 +184,7 @@ class senM(sen):
 
 
     def Mplot(self):
+      with console.status("[bold green]plotting...") as status:
         
         
         # Visualize Groundtruth
@@ -186,6 +193,9 @@ class senM(sen):
                     cmap=ListedColormap(['darkgreen', 'green', 'black', 
                                         '#CA6F1E', 'navy', 'forestgreen']))
         plt.show()
+        console.log(f" Done!")
 
 
 
+    def __del__(self):
+      pass
