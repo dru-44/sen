@@ -1,8 +1,8 @@
 #code ...
-from src.main import sen
-from src.Analysis import senA
-from src.LandCoverCla import senC
-from src.LandCoverMod import senM
+from src.main import *
+from src.Analysis import *
+from src.LandCoverCla import *
+from src.LandCoverMod import *
 
 
 
