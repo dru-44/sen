@@ -12,7 +12,7 @@ setup(
   name='Satt2',
   version='0.0.1',
   description='Sentinel satellite image module',
-  long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.md').read(),
+  #long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.md').read(),
   url='https://github.com/dru-44/sen.git',  
   author='Dru44',
   author_email='',
