@@ -9,12 +9,12 @@ classifiers = [
 ]
  
 setup(
-  name='Sat',
+  name='Satt2',
   version='0.0.1',
-  description='Analysis of satellite images',
-  long_description=open('README.txt').read() + '\n\n' + open('CHANGELOG.txt').read(),
-  url='',  
-  author='',
+  description='Sentinel satellite image module',
+  long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.txt').read(),
+  url='https://github.com/dru-44/sen.git',  
+  author='Dru44',
   author_email='',
   license='MIT', 
   classifiers=classifiers,
