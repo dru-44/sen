@@ -21,15 +21,15 @@ setup(
   keywords='analysis', 
   packages=find_packages(),
   install_requires=[
-    "<matplotlib>;python_version<'<3.6.6>'",
-    "<numpy> >= <1.17.4>",
-    "<rasterio> >= <1.2.10>",
-    "<plotly> >= <5.7.0>",
-    "<earthpy>",
-    "<tensorboard>",
-    "<rich>",
-    "<lightgbm>",
-    "<seaborn>",
+    'matplotlib',
+    'numpy',
+    'rasterio',
+    'plotly',
+    'earthpy',
+    'tensorboard',
+    'rich',
+    'lightgbm',
+    'seaborn',
    ] 
 
 )
