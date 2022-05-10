@@ -1,4 +1,4 @@
-from src.base import *
+from example_package.base import *
 
 
 
