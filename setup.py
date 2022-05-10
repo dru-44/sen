@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="Sentinel-imgpackage",
-    version="0.0.5",
+    version="0.0.6",
     author="Dru44",
     author_email="dhruthik28@gmail.com",
     license='MIT',
@@ -17,9 +17,11 @@ setuptools.setup(
         "Bug Tracker": "https://github.com/dru-44/sen/issues",
     },
     classifiers=[
+        "Development Status :: Stable",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
     ],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
