@@ -50,13 +50,13 @@ Creating obj
 
 from senpkg import *
 
-path="your data source path"
-gt="ground-truth .mat filename"
-mname="model name"
+path = "your data source path"
+gt = "ground-truth .mat filename"
+mname = "model name"
 
-p=Analysis.senA(path)
-q=LandCoverCla.senC(path,gt)
-r=LandCoverMod.senM(path,gt,mname)
+p = Analysis.senA(path)
+q = LandCoverCla.senC(path,gt)
+r = LandCoverMod.senM(path,gt,mname)
 ```
 ## License
 
