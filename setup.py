@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="example-packagempy",
+    name="Sentinel-imgpackage",
     version="0.0.9",
     author="Dru44",
     author_email="dhruthik28@gmail.com",

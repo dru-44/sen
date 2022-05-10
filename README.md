@@ -1,1 +1,1 @@
-#project
+#Sentinel 2 image package
