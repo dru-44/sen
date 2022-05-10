@@ -21,7 +21,7 @@ This project requires ``python3`` installed.
 
 
 
-1. Clone the repo
+1. Clone the dataset repo
    ```sh
    git clone https://github.com/your_username_/Project-Name.git
    ```
