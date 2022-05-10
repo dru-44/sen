@@ -7,16 +7,16 @@ from senpkg.base import *
 class senC(sen):
     X_data = y_data = X_train = X_test = y_train = y_test = X_scaled = None
 
-    def __init__(self,Path=None):
+    def __init__(self,Path=None,Gname=None):
         sen.__init__(self, Path)
+        self.Gname = Gname
         x = np.moveaxis(sen.arr_st, 0, -1)
         senC.X_data = x.reshape(-1, 12)
 
         scaler = StandardScaler().fit(senC.X_data)
 
         senC.X_scaled = scaler.transform(senC.X_data)
-        senC.y_data = loadmat(self.Path +
-                              "/Sundarbands_gt.mat")['gt']
+        senC.y_data = loadmat(self.Path +'/' + self.Gname)['gt']
         senC.X_train, senC.X_test, senC.y_train, senC.y_test = train_test_split(
             senC.X_scaled, senC.y_data.ravel(), test_size=0.30, stratify=senC.y_data.ravel())
 

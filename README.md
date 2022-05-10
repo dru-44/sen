@@ -13,4 +13,6 @@ Creating obj
 from senpkg import *
 
 path="your data source path"
-p=LandCoverMod.senM(path)
+p= Analysis.senA(path)
+q=LandCoverCla.senC(path)
+r=LandCoverMod.senM(path)

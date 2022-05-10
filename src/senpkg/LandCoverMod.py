@@ -1,3 +1,4 @@
+from tkinter import N
 from senpkg.base import *
 
 
@@ -5,7 +6,7 @@ from senpkg.base import *
 
 class senM(sen):
     X_data = y_data = X_train = X_test = y_train = y_test = X_scaled = None
-    dataset = 'SB'
+    dataset = None
     test_size = 0.30
     windowSize = 15
     MODEL_NAME = 'TestModel'
@@ -16,10 +17,12 @@ class senM(sen):
     pred_t= None
     X=None 
     
-    def __init__(self,Path=None):
+    def __init__(self,Path=None,Gname=None,Mname=None,):
       with console.status("[bold green]Verifying resources...") as status:
         sen.__init__(self, Path)
-        
+        self.Gname = Gname
+        self.Mname = Mname
+        senM.dataset = self.Mname
         def applyPCA(X, numComponents=75):
             newX = np.reshape(X, (-1, X.shape[2]))
             pca = PCA(n_components=numComponents, whiten=True)
@@ -64,8 +67,7 @@ class senM(sen):
 
        
         senM.X_data = np.moveaxis(sen.arr_st, 0, -1)
-        senM.y_data = loadmat('/content/'+self.Path +
-                              '/Sundarbands_gt.mat')['gt']
+        senM.y_data = loadmat(self.Path +'/' + self.Gname)['gt']
         
         senM.X,pca = applyPCA(senM.X_data,numComponents=senM.K)
         senM.X, y = createImageCubes(senM.X, senM.y_data, windowSize=senM.windowSize)

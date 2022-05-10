@@ -44,7 +44,7 @@ class sen:
 
     def __init__(self, Path=None):
         self.Path = Path
-
+        
         sen.S_sentinel_bands = glob(self.Path+"/*B?*.tiff")
         sen.S_sentinel_bands.sort()
         l = []
