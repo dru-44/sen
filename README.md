@@ -10,8 +10,8 @@ Developed by Florian Dedov from NeuralNine (c) 2020
 Creating obj
 
 ```python
-path="your data source path"
+
 from senpkg import *
 
-
+path="your data source path"
 p=LandCoverMod.senM(path)
