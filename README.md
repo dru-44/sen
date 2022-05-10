@@ -1,10 +1,12 @@
 <div id="top"></div>
 
-# Sentinel 2 image package
+# Sentinel 2 image package 🛰 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)                 
 
 Under construction! Not ready for use yet! Currently experimenting and planning!
 
+
+![forthebadge made-with-python](https://img.shields.io/pypi/v/Sentinel-imgpackage?style=for-the-badge)
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -48,13 +50,13 @@ Creating obj
 
 from senpkg import *
 
-path="your data source path"
-gt="ground-truth .mat filename"
-mname="model name"
+path = "your data source path"
+gt = "ground-truth .mat filename"
+mname = "model name"
 
-p= Analysis.senA(path)
-q=LandCoverCla.senC(path,gt)
-r=LandCoverMod.senM(path,gt,mname)
+p = Analysis.senA(path)
+q = LandCoverCla.senC(path,gt)
+r = LandCoverMod.senM(path,gt,mname)
 ```
 ## License
 
