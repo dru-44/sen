@@ -1,6 +1,6 @@
 <div id="top"></div>
 
-# Sentinel 2 image package 
+# Sentinel 2 image package 🛰 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)                 
 
 Under construction! Not ready for use yet! Currently experimenting and planning!
