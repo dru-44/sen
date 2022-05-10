@@ -3,6 +3,10 @@
 
 Under construction! Not ready for use yet! Currently experimenting and planning!
 
+## Setup
+```python
+pip install Sentinel-imgpackage
+```
 
 ## Example of How To Use (Alpha Version)
 
