@@ -49,7 +49,7 @@ Creating obj
 from senpkg import *
 
 path="your data source path"
-gt="ground-truth .mat name"
+gt="ground-truth .mat filename"
 mname="model name"
 
 p= Analysis.senA(path)
