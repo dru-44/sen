@@ -4,7 +4,7 @@
 Under construction! Not ready for use yet! Currently experimenting and planning!
 
 
-## Example of How To Use (Buggy Alpha Version)
+## Example of How To Use (Alpha Version)
 
 Creating obj
 
