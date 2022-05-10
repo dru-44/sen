@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="Sentinel-imgpackage",
-    version="0.0.8",
+    version="0.0.9",
     author="Dru44",
     author_email="dhruthik28@gmail.com",
     license='MIT',
