@@ -1,4 +1,4 @@
-from example_package.base import *
+from senpkg.base import *
 
 
 
