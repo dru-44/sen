@@ -17,6 +17,9 @@ Creating obj
 from senpkg import *
 
 path="your data source path"
+gt="ground-truth .mat name"
+mname="model name"
+
 p= Analysis.senA(path)
-q=LandCoverCla.senC(path)
-r=LandCoverMod.senM(path)
+q=LandCoverCla.senC(path,gt)
+r=LandCoverMod.senM(path,gt,mname)
