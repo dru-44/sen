@@ -5,15 +5,16 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="example-packagempy",
-    version="0.0.8",
-    author="Example Author",
-    author_email="author@example.com",
-    description="A small example package",
+    version="0.0.9",
+    author="Dru44",
+    author_email="dhruthik28@gmail.com",
+    license='MIT',
+    description="Sentinel satellite image module",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/dru-44/sen",
     project_urls={
-        "Bug Tracker": "https://github.com/pypa/sampleproject/issues",
+        "Bug Tracker": "https://github.com/dru-44/sen/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
