@@ -17,7 +17,7 @@ from sklearn.preprocessing import StandardScaler
 from scipy.io import loadmat
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.model_selection import train_test_split
-import plotly.graph_objects as go
+
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 import lightgbm as lgb
