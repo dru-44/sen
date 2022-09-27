@@ -23,11 +23,7 @@ This project requires ``python3`` installed.
 
 
 
-1. Clone the dataset repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-2. Install pip packages
+1. Install pip packages
    ```python
    pip install Sentinel-imgpackage
    ```
